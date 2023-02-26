@@ -24,6 +24,7 @@ import com.fancy.demo.models.FancyPlayerRunAnalysis;
 import com.fancy.demo.models.PlayerRun;
 import com.fancy.demo.repository.BatsmanScoreRepository;
 import com.fancy.demo.repository.PlayerRunRepository;
+import com.fancy.demo.strategies.WicketNotStrategies;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -159,7 +160,7 @@ public class FancyPlayerRunDataController
 	}
 	
 
-	BiFunction<Integer, Integer, Boolean> isSecondBetDouble = (b1,b2) -> b2 > (b1*2);
+	
 	
 	Predicate<List<BatsmanScore>> hasMultipleBatsmanWithSimilarName = (scores) -> scores.stream().map(b->b.getPlayerName()).distinct().count() > 1;
 	
@@ -171,7 +172,6 @@ public class FancyPlayerRunDataController
 		
 		System.out.println("getBetPnL for "+playerName);
 		
-		int betPnL = 0 ;
 		
 		String batterName = getBastmanName(playerName);
 		
@@ -223,32 +223,23 @@ public class FancyPlayerRunDataController
 		
 		int batsmanScored = playerScore.get(playerScore.size()-1).getPlayerRun();
 		
-		if(layBets.size()>1 && !isSecondBetDouble.apply(layBets.get(0), layBets.get(1)) )
-		{
-			betPnL = -100;
-		}
-		
-		if(layBets.size()>1 && isSecondBetDouble.apply(layBets.get(0), layBets.get(1)))
-		{
-			betPnL = (layBets.get(layBets.size()-1) > batsmanScored) ? 100 : -100;
-		}
-		
-		
-		if(layBets.size() == 1 )
-		{
-			betPnL = (layBets.get(0) > batsmanScored) ? 100 : -100;
-		}
+		int startegy1BetPnL = WicketNotStrategies.strategy1BetPnL(layBets, batsmanScored);
+		int startegy2BetPnL = WicketNotStrategies.strategy2BetPnL(layBets, batsmanScored);
+		int startegy3BetPnL = WicketNotStrategies.strategy3BetPnL(layBets, batsmanScored);
 		
 		analysis.setPlayerName(playerName);
 		analysis.setLayBets(layBets);
 		analysis.setTotalBets(layBets.size());
-		analysis.setBetPnL(betPnL);
 		analysis.setBatsmanScored(batsmanScored);
 		analysis.setInning(playerScore.iterator().next().getInning());
 		analysis.setCreateDateTime(playerScore.iterator().next().getCreateDateTime());
-		
+		analysis.setStartegy1BetPnL(startegy1BetPnL);
+		analysis.setStartegy2BetPnL(startegy2BetPnL);
+		analysis.setStartegy3BetPnL(startegy3BetPnL);
 		return analysis;
 	}
+
+	
 	
 	private String getBastmanName(String playerName) 
 	{

@@ -25,35 +25,25 @@
   	<option value="${match.matchId}" data-matchId="${match.matchId}">${match.matchTitle}</option>
   </c:forEach>
 </select>
-
+</div>
+<div class="w-50">
 <span class="badge rounded-pill bg-primary mb-2"  id="matchDateDisplay"></span>
+</div>
 
+</div>
 
-
-<table class="table table-sm table-hover text-center table-bordered pt-1" id="fancyRunDataTable">
-	<thead style="position: sticky;top: 0" class="bg-light">
-	    <tr>
-	      <th scope="col">Player Name</th>
-	      <th scope="col">Inning</th>
-	      <th scope="col">Player Run</th>
-	      <th scope="col">Lay Run</th>
-	      <th scope="col">Lay Odd</th>
-	      <th scope="col">Back Run</th>
-	      <th scope="col">Back Odd</th>
-	    </tr>
-  </thead>
-</table> 
+<tags:strategyDescriptor/>
+<tags:fancyWktNotRecords/>
 
 
 <a class="btn btn-primary" href="#" role="button" id="batsmanScoresForFancyLink">Batsman Scores</a>
-</div>
-
-<div class="w-50">
 
 
 
-<h3>Wkt Not</h3>
-<table class="table table-sm table-hover text-center table-bordered pt-1 display" id="fancyRunAnalysisDataTable">
+
+
+
+<table class="table table-sm table-hover text-center table-bordered pt-1 display mt-2" id="fancyRunAnalysisDataTable">
 	<thead style="position: sticky;top: 0" class="bg-light">
 	    <tr>
 	      <th scope="col">Player Name</th>
@@ -61,14 +51,16 @@
 	      <th scope="col">Lay Bets</th>
 	      <th scope="col">Total Bets</th>
 	      <th scope="col">Batsman Scored</th>
-	      <th scope="col">Bet P&L</th>
+	      <th scope="col">Strategy 1</th>
+	      <th scope="col">Strategy 2</th>
+	      <th scope="col">Strategy 3</th>
 	    </tr>
   </thead>
   <tbody></tbody>
 </table> 
 
-</div>
-</div>
+
+
 
 
 </div>

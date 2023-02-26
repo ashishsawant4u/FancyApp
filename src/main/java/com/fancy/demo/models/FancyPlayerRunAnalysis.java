@@ -28,6 +28,10 @@ public class FancyPlayerRunAnalysis {
 	LocalDateTime createDateTime;
 	
 	Integer batsmanScored;
-
-	Integer betPnL;
+	
+	Integer startegy1BetPnL;
+	
+	Integer startegy2BetPnL;
+	
+	Integer startegy3BetPnL;
 }
