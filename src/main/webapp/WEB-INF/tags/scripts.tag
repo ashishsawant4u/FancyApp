@@ -22,7 +22,9 @@
 
 <script src="/fancyapp/js/fancyPlayerRun.js"></script>
 <script src="/fancyapp/js/batsmanScore.js"></script>
-
+<script src="/fancyapp/js/wktNotReportSummaryPage.js"></script>
+<script src="/fancyapp/js/betsCounterSummaryPage.js"></script>
+<script src="/fancyapp/js/layBetsSummaryPage.js"></script>
 
 <link href="/fancyapp/css/style.css" rel="stylesheet">
 

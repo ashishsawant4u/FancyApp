@@ -34,4 +34,8 @@ public class FancyPlayerRunAnalysis {
 	Integer startegy2BetPnL;
 	
 	Integer startegy3BetPnL;
+	
+	Integer startegy4BetPnL;
+	
+	Integer startegy5BetPnL;
 }

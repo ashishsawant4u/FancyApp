@@ -14,7 +14,7 @@ function getBatsmanScoreByMatch(matchId)
 		
 			
 			var batsmanScoreTable = $('#batsmanScoreDataTable').DataTable({
-			    ajax: 'http://localhost:7041/fancyapp/batsmanscore/get/'+matchId,
+			    ajax: batsmanScoreByMatchDataUrl+matchId,
 				dataSrc:"",
 				ordering: false,
 				pagingType: "full",

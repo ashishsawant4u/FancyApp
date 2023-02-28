@@ -32,6 +32,18 @@
 				      Subsquent bet double
 				    </div>
 				  </li>
+				  <li class="list-group-item d-flex justify-content-between align-items-start">
+				    <div class="ms-2 me-auto">
+				      <div class="fw-bold">Wkt Not Startegy 4</div>
+				       If 2nd lay bet is more than double Then enter else YES (Strategy 2 + ONLY 2X)
+				    </div>
+				  </li>
+				  <li class="list-group-item d-flex justify-content-between align-items-start">
+				    <div class="ms-2 me-auto">
+				      <div class="fw-bold">Wkt Not Startegy 5</div>
+				       Only 1st bet Not
+				    </div>
+				  </li>
 				</ol>
       </div>
     </div>

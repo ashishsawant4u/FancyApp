@@ -38,5 +38,6 @@
 
 
 <tags:scripts/>
+<tags:javascriptVariables />
 </body>
 </html>

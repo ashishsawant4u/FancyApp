@@ -37,10 +37,9 @@
 
 
 <a class="btn btn-primary" href="#" role="button" id="batsmanScoresForFancyLink">Batsman Scores</a>
-
-
-
-
+<a class="btn btn-warning" href="#" role="button" id="wktNotSummaryLink">Wkt Not Summary</a>
+<a class="btn btn-info" href="#" role="button" id="betsCounterPageLink">Bets Counter</a>
+<a class="btn btn-success" href="#" role="button" id="layBetSummaryPageLink">Lay Bets Summary</a>
 
 
 <table class="table table-sm table-hover text-center table-bordered pt-1 display mt-2" id="fancyRunAnalysisDataTable">
@@ -54,6 +53,8 @@
 	      <th scope="col">Strategy 1</th>
 	      <th scope="col">Strategy 2</th>
 	      <th scope="col">Strategy 3</th>
+	      <th scope="col">Strategy 4</th>
+	      <th scope="col">Strategy 5</th>
 	    </tr>
   </thead>
   <tbody></tbody>
@@ -66,5 +67,6 @@
 </div>
 
 <tags:scripts/>
+<tags:javascriptVariables />
 </body>
 </html>

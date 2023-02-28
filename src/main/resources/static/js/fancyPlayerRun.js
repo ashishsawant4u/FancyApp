@@ -10,11 +10,30 @@ $( document ).ready(function() {
 	$("#matchesDropdown").trigger('change');
 	
 	
+	let inning = window.location.pathname.split("/").pop();
+	
 	$('#batsmanScoresForFancyLink').on('click', function() {
 		let matchId = $('#matchesDropdown').val();
-		let url = 'http://localhost:7041/fancyapp/batsmanscore/data/'+matchId;
+		let url = batsmanScoreByMatchPageUrl+matchId;
 		window.open(url , '_blank');
 	});
+	
+	$('#wktNotSummaryLink').on('click', function() {
+		let url = wktNotSummartyReportPageUrl+'/'+inning;
+		window.open(url , '_blank');
+	});
+	
+	$('#betsCounterPageLink').on('click', function() {
+		let url = betsCounterPageUrl;
+		window.open(url , '_blank');
+	});
+	
+	$('#layBetSummaryPageLink').on('click', function() {
+		let url = layBetsSummaryPageUrl+'/'+inning;
+		window.open(url , '_blank');
+	});
+	
+	
 	
 });
 
@@ -27,7 +46,7 @@ function getFancyPlayerRun(matchId)
 		
 			
 			var fancyPlayerRunTable = $('#fancyRunDataTable').DataTable({
-			    ajax: 'http://localhost:7041/fancyapp/fancyplayer/data/'+matchId,
+			    ajax: fancyRecordsByMatchUrl+matchId,
 				dataSrc:"",
 				ordering: false,
 				pagingType: "full",
@@ -79,10 +98,19 @@ function getFancyPlayerRunAnalysis(matchId)
 			let startegy1BetPnLTotal = 0;
 			let startegy2BetPnLTotal = 0;
 			let startegy3BetPnLTotal = 0;
+			let startegy4BetPnLTotal = 0;
+			let startegy5BetPnLTotal = 0;
+			
+			let inning = window.location.pathname.split("/").pop();
+			
+			if(null === inning)
+			{
+				inning = 0;
+			}
 			
 			$.ajax({
 		            type: "GET",
-		            url: 'http://localhost:7041/fancyapp/fancyplayer/analyzeMatch/'+matchId,
+		            url: analyzeFancyByMatchUrl+matchId+'/'+inning,
 		            contentType: "application/json;",
 		            success: function (response) {
 		                console.log(response);
@@ -98,7 +126,9 @@ function getFancyPlayerRunAnalysis(matchId)
 										+ '<td>' + response[i].batsmanScored+ '</td>'
 										+ '<td>' + response[i].startegy1BetPnL+ '</td>'
 										+ '<td>' + response[i].startegy2BetPnL+ '</td>'
-										+ '<td>' + response[i].startegy3BetPnL+ '</td>' + '</tr>';
+										+ '<td>' + response[i].startegy3BetPnL+ '</td>'
+										+ '<td>' + response[i].startegy4BetPnL+ '</td>'
+										+ '<td>' + response[i].startegy5BetPnL+ '</td>' + '</tr>';
 										
 							
 							 $('#fancyRunAnalysisDataTable tbody').append(trStr);
@@ -106,18 +136,19 @@ function getFancyPlayerRunAnalysis(matchId)
 							startegy1BetPnLTotal = startegy1BetPnLTotal + response[i].startegy1BetPnL;
 							startegy2BetPnLTotal = startegy2BetPnLTotal + response[i].startegy2BetPnL;
 							startegy3BetPnLTotal = startegy3BetPnLTotal + response[i].startegy3BetPnL;
+							startegy4BetPnLTotal = startegy4BetPnLTotal + response[i].startegy4BetPnL;
+							startegy5BetPnLTotal = startegy5BetPnLTotal + response[i].startegy5BetPnL;
 						}
 						
-						let startegy1BetPnLTotalClass = (startegy1BetPnLTotal < 0) ? 'bg-danger' : 'bg-success';
-						let startegy2BetPnLTotalClass = (startegy2BetPnLTotal < 0) ? 'bg-danger' : 'bg-success';
-						let startegy3BetPnLTotalClass = (startegy3BetPnLTotal < 0) ? 'bg-danger' : 'bg-success';
 						
 						let trStr = '<tr>'+'<td></td>'
 										+ '<td></td>'+ '<td></td>'+ '<td></td>'
 										+ '<td class="fw-bold">Total</td>'
-										+ '<td class="text-white '+startegy1BetPnLTotalClass+'">' + startegy1BetPnLTotal + '</td>'
-										+ '<td class="text-white '+startegy2BetPnLTotalClass+'">' + startegy2BetPnLTotal + '</td>'
-										+ '<td class="text-white '+startegy3BetPnLTotalClass+'">' + startegy3BetPnLTotal + '</td>' + '</tr>';
+										+ '<td class="text-white '+getPnLClass(startegy1BetPnLTotal)+'">' + startegy1BetPnLTotal + '</td>'
+										+ '<td class="text-white '+getPnLClass(startegy2BetPnLTotal)+'">' + startegy2BetPnLTotal + '</td>'
+										+ '<td class="text-white '+getPnLClass(startegy3BetPnLTotal)+'">' + startegy3BetPnLTotal + '</td>'
+										+ '<td class="text-white '+getPnLClass(startegy4BetPnLTotal)+'">' + startegy4BetPnLTotal + '</td>'
+										+ '<td class="text-white '+getPnLClass(startegy5BetPnLTotal)+'">' + startegy5BetPnLTotal + '</td>' + '</tr>';
 										
 							 $('#fancyRunAnalysisDataTable tbody').append(trStr);
 		            }
@@ -125,4 +156,9 @@ function getFancyPlayerRunAnalysis(matchId)
 	}
 			
 				
+}
+
+function getPnLClass(pnlTotal)
+{
+	return (pnlTotal < 0) ? 'bg-danger' : 'bg-success';
 }

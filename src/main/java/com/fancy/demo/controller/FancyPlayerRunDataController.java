@@ -40,8 +40,8 @@ public class FancyPlayerRunDataController
 	@Resource(name = "batsmanScoreRepository")
 	BatsmanScoreRepository batsmanScoreRepository;
 	
-	@RequestMapping("/data")
-	public String getData(Model model)
+	@RequestMapping("/wktnot/{inning}")
+	public String getData(@PathVariable(name = "inning", required = false) String inning,Model model)
 	{
 		model.addAttribute("allMatches", getAllMatches());
 		
@@ -50,7 +50,7 @@ public class FancyPlayerRunDataController
 	
 	@RequestMapping("/data/{matchId}")
 	@ResponseBody
-	public Map<String, List<PlayerRun>> getTradeSummary(@PathVariable("matchId") String matchId)
+	public Map<String, List<PlayerRun>> getMatchFancyRecords(@PathVariable("matchId") String matchId)
 	{
 		log.info(matchId);
 		
@@ -74,9 +74,9 @@ public class FancyPlayerRunDataController
 		
 	}
 	
-	@RequestMapping("/analyzeMatch/{matchId}")
+	@RequestMapping("/analyzeMatch/{matchId}/{inning}")
 	@ResponseBody
-	public List<FancyPlayerRunAnalysis> analyzeMatch(@PathVariable("matchId") String matchId)
+	public List<FancyPlayerRunAnalysis> analyzeMatch(@PathVariable("matchId") String matchId,@PathVariable(name = "inning", required = false) Integer inning)
 	{
 		List<PlayerRun> fancyRunRecords =  playerRunRepository.findDistinctPlayerNameByMatchIdOrderByIdAsc(matchId);
 		
@@ -108,10 +108,13 @@ public class FancyPlayerRunDataController
 			}
 		}
 		
-		//playerBetsCount.sort(Comparator.comparing(FancyPlayerRunAnalysis::getInning, Comparator.nullsFirst(Comparator.naturalOrder())));
-		
 		playerBetsCount.sort(Comparator.comparing(FancyPlayerRunAnalysis::getCreateDateTime, Comparator.nullsFirst(Comparator.naturalOrder())));
 
+		if(null!= inning && inning > 0)
+		{
+			return playerBetsCount.stream().filter(a->a.getInning() == inning).collect(Collectors.toList());
+		}
+		
 		
 		return playerBetsCount;
 	}
@@ -223,19 +226,30 @@ public class FancyPlayerRunDataController
 		
 		int batsmanScored = playerScore.get(playerScore.size()-1).getPlayerRun();
 		
-		int startegy1BetPnL = WicketNotStrategies.strategy1BetPnL(layBets, batsmanScored);
-		int startegy2BetPnL = WicketNotStrategies.strategy2BetPnL(layBets, batsmanScored);
-		int startegy3BetPnL = WicketNotStrategies.strategy3BetPnL(layBets, batsmanScored);
+		List<Integer> layBetsBkp = new ArrayList<Integer>(layBets);
 		
 		analysis.setPlayerName(playerName);
-		analysis.setLayBets(layBets);
 		analysis.setTotalBets(layBets.size());
 		analysis.setBatsmanScored(batsmanScored);
 		analysis.setInning(playerScore.iterator().next().getInning());
 		analysis.setCreateDateTime(playerScore.iterator().next().getCreateDateTime());
+		
+		
+		//layBets = layBets.stream().limit(2).collect(Collectors.toList());
+		
+		int startegy1BetPnL = WicketNotStrategies.strategy1BetPnL(layBets, batsmanScored);
+		int startegy2BetPnL = WicketNotStrategies.strategy2BetPnL(layBets, batsmanScored);
+		int startegy3BetPnL = WicketNotStrategies.strategy3BetPnL(layBets, batsmanScored);
+		int startegy4BetPnL = WicketNotStrategies.strategy4BetPnL(layBets, batsmanScored);
+		int startegy5BetPnL = WicketNotStrategies.strategy5BetPnL(layBets, batsmanScored);
+		
+		
+		analysis.setLayBets(layBetsBkp);
 		analysis.setStartegy1BetPnL(startegy1BetPnL);
 		analysis.setStartegy2BetPnL(startegy2BetPnL);
 		analysis.setStartegy3BetPnL(startegy3BetPnL);
+		analysis.setStartegy4BetPnL(startegy4BetPnL);
+		analysis.setStartegy5BetPnL(startegy5BetPnL);
 		return analysis;
 	}
 
