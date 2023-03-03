@@ -11,14 +11,15 @@
 </head>
 <body class="batsman-score-page">
 
-<h1>Batsman Score</h1>
 
 <div class="container-fluid mt-1">
-
+<div class="bg-a1 fs-3 text-center text-white p-1">
+	Batsman Score
+</div>
 
 <div class="w-50">
 
-<span class="badge rounded-pill bg-primary mb-2"  id="matchTitleForBatsmanScore"></span>
+<span class="badge rounded-pill bg-primary mb-2 mt-2"  id="matchTitleForBatsmanScore"></span>
 
 
 <table class="table table-sm table-hover text-center table-bordered pt-1" id="batsmanScoreDataTable">

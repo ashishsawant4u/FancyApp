@@ -11,14 +11,16 @@
 </head>
 <body class="betscounter-page">
 
-<h1>Bets Counter</h1>
+
 
 <div class="container-fluid mt-1">
 
+<div class="bg-a1 fs-3 text-center text-white p-1">
+	Bets Counter
+</div>
 
 
-
-<table class="table table-sm table-hover text-center table-bordered pt-1 caption-top" id="betsCounterSummaryDataTable">
+<table class="table table-sm table-hover text-center table-bordered pt-1 caption-top mt-2" id="betsCounterSummaryDataTable">
 	<caption class="fs-5 fw-bold text-primary">Innings 1 and 2 Combined</caption>
 	<thead style="position: sticky;top: 0" class="table-dark">
 	    <tr>
@@ -30,6 +32,7 @@
 	    </tr>
   </thead>
 </table> 
+<span id="bestBetCaption-inn"></span> 
 
 <div class="row">
 	<div class="w-50">
@@ -45,6 +48,7 @@
 				    </tr>
 			  </thead>
 			</table> 
+			<span id="bestBetCaption-inn1"></span> 
 	</div>
 	<div class="w-50">
 			<table class="table table-sm table-hover text-center table-bordered pt-1 caption-top" id="betsCounterSummaryDataTableInn2">
@@ -58,7 +62,8 @@
 				      <th scope="col">Win Rate</th>
 				    </tr>
 			  </thead>
-			</table> 
+			</table>
+			<span id="bestBetCaption-inn2"></span> 
 	</div>
 </div>
 

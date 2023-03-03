@@ -3,6 +3,7 @@
     
 <%@ taglib prefix="tags" tagdir="/WEB-INF/tags" %> 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <!DOCTYPE html>
 <html>
@@ -12,9 +13,14 @@
 </head>
 <body class="fancy-player-run-page">
 
-<h1>Fancy Player Run</h1>
+
 
 <div class="container-fluid mt-1">
+
+<div class="bg-a1 fs-3 text-center text-white p-1">
+	Wkt Not Fancy
+</div>
+
 
 <div class="row">
 <div class="w-50">
@@ -22,7 +28,12 @@
 <select class="form-select mt-1 mb-2" aria-label="Default select example" id="matchesDropdown">
   <option selected>Select Match</option>
   <c:forEach var="match" items="${allMatches}">
-  	<option value="${match.matchId}" data-matchId="${match.matchId}">${match.matchTitle}</option>
+  	
+  	<fmt:parseDate value="${match.createDateTime}" pattern="yyyy-MM-dd'T'HH:mm" var="parsedDateTime" type="both" />
+	<fmt:formatDate pattern="dd-MMM-yyyy" value="${ parsedDateTime }" var="matchDay"/>
+  
+  
+  	<option value="${match.matchId}" data-matchId="${match.matchId}">${match.matchTitle} ${matchDay}</option>
   </c:forEach>
 </select>
 </div>
@@ -40,6 +51,7 @@
 <a class="btn btn-warning" href="#" role="button" id="wktNotSummaryLink">Wkt Not Summary</a>
 <a class="btn btn-info" href="#" role="button" id="betsCounterPageLink">Bets Counter</a>
 <a class="btn btn-success" href="#" role="button" id="layBetSummaryPageLink">Lay Bets Summary</a>
+<a class="btn btn-danger" href="#" role="button" id="tournamentOutCountPageLink">Tournament Out Range</a>
 
 
 <table class="table table-sm table-hover text-center table-bordered pt-1 display mt-2" id="fancyRunAnalysisDataTable">

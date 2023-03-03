@@ -288,10 +288,13 @@ public class FancyPlayerRunDataController
 				   PlayerRun match = new PlayerRun();
 				   match.setMatchId((String)obj[0]);
 				   match.setMatchTitle((String)obj[1]);
+				   match.setCreateDateTime(playerRunRepository.findByMatchId((String)obj[0]).stream().findFirst().get().getCreateDateTime());
 				   allMatches.add(match);
 			}
 		    
 			Collections.reverse(allMatches);
+			
+			allMatches.remove(0);
 			
 		    return allMatches;
 		} 

@@ -10,3 +10,8 @@
 body{
     font-family: cambria;
 }
+.bg-a1
+{
+	background: rgb(88,106,185)!important;
+	background: radial-gradient(circle, rgba(88,106,185,1) 0%, rgba(0,235,165,1) 100%)!important;
+}

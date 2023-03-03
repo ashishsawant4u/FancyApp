@@ -11,9 +11,13 @@
 </head>
 <body class="laybets-summary-page">
 
-<h1>Lay Bets Summary</h1>
+
 
 <div class="container-fluid mt-1">
+
+<div class="bg-a1 fs-3 text-center text-white p-1 mb-2">
+	Lay Bets Summary
+</div>
 
 
 

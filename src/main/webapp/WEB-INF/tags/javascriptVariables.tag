@@ -12,6 +12,9 @@
 <c:url scope="session" var="betsCounterPageUrl" value="/betcounter/summary"/>
 <c:url scope="session" var="layBetsSummaryDataUrl" value="/laybets/analyze"/>
 <c:url scope="session" var="layBetsSummaryPageUrl" value="/laybets/summary"/>
+<c:url scope="session" var="scoreRangeAnalysisDataUrl" value="/oldscorebaords/analyzescorerange"/>
+<c:url scope="session" var="scoreAnalysisDataUrl" value="/oldscorebaords/analyzescore"/>
+<c:url scope="session" var="tournamentOutCountPageUrl" value="/oldscorebaords/summary"/>
 
 <script type="text/javascript">
 	var fancyRecordsByMatchUrl = "${fancyRecordsByMatchUrl}";
@@ -24,4 +27,7 @@
 	var betsCounterPageUrl = "${betsCounterPageUrl}";
 	var layBetsSummaryDataUrl = "${layBetsSummaryDataUrl}";
 	var layBetsSummaryPageUrl = "${layBetsSummaryPageUrl}";
+	var scoreRangeAnalysisDataUrl = "${scoreRangeAnalysisDataUrl}";
+	var scoreAnalysisDataUrl = "${scoreAnalysisDataUrl}";
+	var tournamentOutCountPageUrl = "${tournamentOutCountPageUrl}";
 </script>

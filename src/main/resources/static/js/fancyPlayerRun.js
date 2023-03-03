@@ -33,6 +33,13 @@ $( document ).ready(function() {
 		window.open(url , '_blank');
 	});
 	
+	$('#tournamentOutCountPageLink').on('click', function() {
+		let url = tournamentOutCountPageUrl;
+		window.open(url , '_blank');
+	});
+	
+	
+	
 	
 	
 });
@@ -82,7 +89,7 @@ function getFancyPlayerRun(matchId)
 
 				let matchDate = new Date(json.data[0].createDateTime.substring(0,10));
 				let matchMonth = matchDate.getMonth()+1;
-				$('#matchDateDisplay').text(matchDate.getDate()+'-'+ matchMonth +"-"+matchDate.getFullYear());
+				//$('#matchDateDisplay').text(matchDate.getDate()+'-'+ matchMonth +"-"+matchDate.getFullYear());
 
 			});
 		}	
