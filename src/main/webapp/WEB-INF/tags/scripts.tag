@@ -26,6 +26,8 @@
 <script src="/fancyapp/js/betsCounterSummaryPage.js"></script>
 <script src="/fancyapp/js/layBetsSummaryPage.js"></script>
 <script src="/fancyapp/js/oldScoreAnalysisPage.js"></script>
+<script src="/fancyapp/js/layBetTestSummaryPage.js"></script>
+
 
 <link href="/fancyapp/css/style.css" rel="stylesheet">
 

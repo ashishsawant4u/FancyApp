@@ -52,7 +52,7 @@
 <a class="btn btn-info" href="#" role="button" id="betsCounterPageLink">Bets Counter</a>
 <a class="btn btn-success" href="#" role="button" id="layBetSummaryPageLink">Lay Bets Summary</a>
 <a class="btn btn-danger" href="#" role="button" id="tournamentOutCountPageLink">Tournament Out Range</a>
-
+<a class="btn btn-warning" href="#" role="button" id="layBetTesterPageLink">Lay Bet Tester</a>
 
 <table class="table table-sm table-hover text-center table-bordered pt-1 display mt-2" id="fancyRunAnalysisDataTable">
 	<thead style="position: sticky;top: 0" class="bg-light">

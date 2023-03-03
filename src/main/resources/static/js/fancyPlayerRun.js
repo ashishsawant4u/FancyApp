@@ -38,6 +38,11 @@ $( document ).ready(function() {
 		window.open(url , '_blank');
 	});
 	
+	$('#layBetTesterPageLink').on('click', function() {
+		let url = layBetTesterPageUrl;
+		window.open(url , '_blank');
+	});
+	
 	
 	
 	

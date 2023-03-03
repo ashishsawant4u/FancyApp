@@ -15,6 +15,9 @@
 <c:url scope="session" var="scoreRangeAnalysisDataUrl" value="/oldscorebaords/analyzescorerange"/>
 <c:url scope="session" var="scoreAnalysisDataUrl" value="/oldscorebaords/analyzescore"/>
 <c:url scope="session" var="tournamentOutCountPageUrl" value="/oldscorebaords/summary"/>
+<c:url scope="session" var="laybetTestingAnalysisUrl" value="/laybettest/analyze"/>
+<c:url scope="session" var="layBetTesterPageUrl" value="/laybettest/summary"/>
+
 
 <script type="text/javascript">
 	var fancyRecordsByMatchUrl = "${fancyRecordsByMatchUrl}";
@@ -30,4 +33,6 @@
 	var scoreRangeAnalysisDataUrl = "${scoreRangeAnalysisDataUrl}";
 	var scoreAnalysisDataUrl = "${scoreAnalysisDataUrl}";
 	var tournamentOutCountPageUrl = "${tournamentOutCountPageUrl}";
+	var laybetTestingAnalysisUrl = "${laybetTestingAnalysisUrl}";
+	var layBetTesterPageUrl = "${layBetTesterPageUrl}";
 </script>
