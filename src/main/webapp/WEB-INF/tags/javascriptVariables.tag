@@ -17,6 +17,8 @@
 <c:url scope="session" var="tournamentOutCountPageUrl" value="/oldscorebaords/summary"/>
 <c:url scope="session" var="laybetTestingAnalysisUrl" value="/laybettest/analyze"/>
 <c:url scope="session" var="layBetTesterPageUrl" value="/laybettest/summary"/>
+<c:url scope="session" var="laybetTestingMatchwisePnLAnalysisUrl" value="/laybettest/pnlstats"/>
+<c:url scope="session" var="laybetTestingMatchwisePnLAnalysisSummaryUrl" value="/laybettest/pnlstats/summary"/>
 
 
 <script type="text/javascript">
@@ -35,4 +37,6 @@
 	var tournamentOutCountPageUrl = "${tournamentOutCountPageUrl}";
 	var laybetTestingAnalysisUrl = "${laybetTestingAnalysisUrl}";
 	var layBetTesterPageUrl = "${layBetTesterPageUrl}";
+	var laybetTestingMatchwisePnLAnalysisUrl = "${laybetTestingMatchwisePnLAnalysisUrl}";
+	var laybetTestingMatchwisePnLAnalysisSummaryUrl = "${laybetTestingMatchwisePnLAnalysisSummaryUrl}";
 </script>

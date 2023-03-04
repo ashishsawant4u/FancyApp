@@ -294,7 +294,7 @@ public class FancyPlayerRunDataController
 		    
 			Collections.reverse(allMatches);
 			
-			allMatches.remove(0);
+			//allMatches.remove(0);
 			
 		    return allMatches;
 		} 

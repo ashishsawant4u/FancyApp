@@ -7,14 +7,77 @@ $( document ).ready(function() {
 				if(!isNull(tournamentId) && !isNull(inning))
 				{
 					getLaybetTestingSummaryPage(tournamentId,inning);
+					
 				}
 				else
 				{
 					alert('Please select all fields');
 				}
+				
+				$('#layBetTesterMatchwisePnlModalBtn').addClass('d-none');
+				$('#layBetTestSummaryStatsTable').addClass('d-none');
 		});
+		
+		$('#layBetTesterMatchwisePnlModalBtn').on('click', function() {
+			
+			$('#layBetMatchwisePnLModal').modal('show'); 
+		});
+		
+		
 	
 });
+
+function showLayBetTestSummryStats()
+{
+	$('#layBetTestSummaryStatsTable').empty();
+	
+	$.ajax({  
+				url: laybetTestingMatchwisePnLAnalysisSummaryUrl,  
+				type: 'GET',  
+				success: function(item) 
+				{  
+						var trHTML = 
+						'<tr><td class="fw-bold">Total Bets</td><td>'+item.totalBets+'</td></tr>'
+						+'<tr><td class="fw-bold">Pass</td><td>'+item.passCount+'</td></tr>'
+						+'<tr><td class="fw-bold">Fail</td><td>'+item.failCount+'</td></tr>'
+						+'<tr><td class="fw-bold">WinRate</td><td>'+item.winRate+'%</td></tr>'
+						+'<tr><td class="fw-bold">FailRate</td><td>'+item.failRate+'%</td></tr>'
+						+'<tr><td class="fw-bold">Max Profit In Match</td><td>'+item.maxProfitInMatch+'</td></tr>'
+						+'<tr><td class="fw-bold">Max Loss In Match</td><td>'+item.maxLossInMatch+'</td></tr>';
+		        
+				        $('#layBetTestSummaryStatsTable').append(trHTML);
+						$('#layBetTestSummaryStatsTable').removeClass('d-none');
+			    }  
+		}); 
+}
+
+
+
+function  getLaybetTestingMatchwisePnL()
+{
+	$('#layBetTesterMatchWisePnLDataTable').dataTable().fnDestroy();
+		
+			
+			var layBetTesterDataTable = $('#layBetTesterMatchWisePnLDataTable').DataTable({
+			    ajax: laybetTestingMatchwisePnLAnalysisUrl,
+				dataSrc:"",
+				ordering: false,
+				pagingType: "full",
+				columns: [
+					  { data: 'matchTitle' },
+					  { data: 'totalPnL' }
+				
+				],
+				initComplete :  function(settings, json) {
+						$('#layBetTesterMatchwisePnlModalBtn').removeClass('d-none');
+						showLayBetTestSummryStats();
+			  	}
+			});
+			
+			
+			
+			
+}
 
 function getLaybetTestingSummaryPage(tournamentId,inning)
 {
@@ -30,7 +93,7 @@ function getLaybetTestingSummaryPage(tournamentId,inning)
 				ordering: false,
 				pagingType: "full",
 				columns: [
-					  { data: 'matchId' },
+					  //{ data: 'matchId' },
 					  { data: 'matchTitle' },
 					  { data: 'inning' },
 					  { data: 'batsman' },
@@ -41,43 +104,24 @@ function getLaybetTestingSummaryPage(tournamentId,inning)
 				],
 				footerCallback: function( tfoot, data, start, end, display ) {
 			        var api = this.api();
-			        $(api.column(6).footer()).html(
-			            api.column(6).data().reduce(function ( a, b ) {
+			        $(api.column(5).footer()).html(
+			            api.column(5).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
 			        );
-			    }
+			    },
+				initComplete :  function(settings, json) {
+			    		getLaybetTestingMatchwisePnL();
+			  	}
 			});
 			
-			layBetTesterDataTable.on('xhr',function(){
-					let jsonData = layBetTesterDataTable.ajax.json();
-					getSummaryCounts(jsonData);
-			});
-			
+		
 			
 		}	
 }
 
-function getSummaryCounts(jsonData)
-{
-	var failCount = jsonData.data.filter(function (el)
-    {
-      return el.betPnL === -100;
-    });
-	var passCount = jsonData.data.filter(function (el)
-    {
-      return el.betPnL === 100;
-    });
-	let winRate = (passCount.length*100)/jsonData.data.length;
-	let failRate = (failCount.length*100)/jsonData.data.length;
-	
-	$('#layBetsTestCountsDiv').html('Total bets <span class="badge bg-dark">'+jsonData.data.length
-								+'</span> Pass <span class="badge bg-dark">'+passCount.length+
-									'</span> Fail <span class="badge bg-dark">'+failCount.length
-									+'</span> WinRate <span class="badge bg-dark">'
-									+winRate.toFixed(2)+
-									'%</span> FailRate <span class="badge bg-dark">'+failRate.toFixed(2)+'%</span>');
-}
+
+
 
 function isNull(value)
 {
