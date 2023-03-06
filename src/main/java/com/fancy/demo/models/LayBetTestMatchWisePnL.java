@@ -17,4 +17,9 @@ public class LayBetTestMatchWisePnL
 	private String matchTitle;
 	
 	private Integer totalPnL;
+
+	private Integer totalBets;
+	
+	private Long matchRef;
 }
+

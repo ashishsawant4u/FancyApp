@@ -2,9 +2,11 @@ package com.fancy.demo.controller;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -48,6 +50,7 @@ public class LayBetTestController
 	
 	Function<List<Integer>, Integer> RANDOM_LAYBET = (bets) ->{
 		
+		 bets = bets.stream().filter(b->b<=30).collect(Collectors.toList());
 		 Random rand = new Random();
 		 return bets.get(rand.nextInt(bets.size()));
 	};
@@ -67,11 +70,11 @@ public class LayBetTestController
 		
 		if(inning.equals("0"))
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContaining(matchId);
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingOrderByIdAsc(matchId);
 		}
 		else
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInning(matchId,Integer.parseInt(inning));
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInningOrderByIdAsc(matchId,Integer.parseInt(inning));
 		}
 		
 		List<LayBetTestAnalysis> analysisList = new ArrayList<>();
@@ -80,6 +83,8 @@ public class LayBetTestController
 		{
 			LayBetTestAnalysis analysis = getLayBetAnalysisInstance(score);
 			int randomLayBet = RANDOM_LAYBET.apply(allLayBets);
+			long matchRef = MATCH_REFERENCE.apply(score.getMatchTitle());
+			analysis.setMatchRef(matchRef);
 			analysis.setLayBet(randomLayBet);
 			if(score.getBatsmanScore() < randomLayBet)
 			{
@@ -90,7 +95,10 @@ public class LayBetTestController
 				analysis.setBetPnL(-100);
 			}
 			analysisList.add(analysis);
+			
 		}
+		
+		analysisList.sort(Comparator.comparing(LayBetTestAnalysis::getMatchRef, Comparator.nullsFirst(Comparator.naturalOrder())));
 		
 		LAY_BET_ANALYSIS_LIST = analysisList;
 		
@@ -115,20 +123,12 @@ public class LayBetTestController
 		for(String match : layeBetTestMap.keySet())
 		{
 			int totalPnL = layeBetTestMap.get(match).stream().mapToInt((a->a.getBetPnL())).sum();
-			LayBetTestMatchWisePnL matchPnL = new LayBetTestMatchWisePnL(match, totalPnL);
+			long matchRef = MATCH_REFERENCE.apply(match);
+			LayBetTestMatchWisePnL matchPnL = new LayBetTestMatchWisePnL(match, totalPnL,layeBetTestMap.get(match).size(),matchRef);
 			analysis.add(matchPnL);
 		}
 		
-		int MAX_PROFIT_IN_MATCH = analysis.stream().mapToInt(m->m.getTotalPnL()).max().getAsInt();
-				
-		int MAX_LOSS_IN_MATCH = analysis.stream().mapToInt(m->m.getTotalPnL()).min().getAsInt();
-		
-		LayBetTestMatchWisePnL maxMatchProfit = new LayBetTestMatchWisePnL("MAX_PROFIT_IN_MATCH", MAX_PROFIT_IN_MATCH);
-
-		LayBetTestMatchWisePnL maxMatchLoss = new LayBetTestMatchWisePnL("MAX_LOSS_IN_MATCH", MAX_LOSS_IN_MATCH);
-		
-		analysis.add(maxMatchProfit);
-		analysis.add(maxMatchLoss);
+		analysis.sort(Comparator.comparing(LayBetTestMatchWisePnL::getMatchRef, Comparator.nullsFirst(Comparator.naturalOrder())));
 		
 		LAY_BET_ANALYSIS_MATCH_WISE_LIST = analysis;
 		
@@ -138,6 +138,12 @@ public class LayBetTestController
 		
 		return data;
 	}
+	
+	Function<String, Long> MATCH_REFERENCE = (matchTitle) -> {
+		List<String> matchTitleSplit= List.of(matchTitle.split("-"));
+		String matchRef = matchTitleSplit.get(matchTitleSplit.size()-1);
+		return Long.valueOf(matchRef);
+	};
 	
 	
 	@RequestMapping("/pnlstats/summary")
@@ -154,10 +160,24 @@ public class LayBetTestController
 		stats.setFailRate((stats.getFailCount()*100)/stats.getTotalBets());
 		
 		int MAX_PROFIT_IN_MATCH = LAY_BET_ANALYSIS_MATCH_WISE_LIST.stream().mapToInt(m->m.getTotalPnL()).max().getAsInt();
-		int MAX_LOSS_IN_MATCH = LAY_BET_ANALYSIS_MATCH_WISE_LIST.stream().mapToInt(m->m.getTotalPnL()).min().getAsInt();
+		Optional<LayBetTestMatchWisePnL> hasAnyLossingMatch = LAY_BET_ANALYSIS_MATCH_WISE_LIST.stream().filter(m->m.getTotalPnL() < 0).findAny();
+		int MAX_LOSS_IN_MATCH = 0;
+		if(hasAnyLossingMatch.isPresent())
+		{
+			MAX_LOSS_IN_MATCH = LAY_BET_ANALYSIS_MATCH_WISE_LIST.stream().mapToInt(m->m.getTotalPnL()).min().getAsInt();
+		}
+		
 		
 		stats.setMaxProfitInMatch(MAX_PROFIT_IN_MATCH);
 		stats.setMaxLossInMatch(MAX_LOSS_IN_MATCH);
+		
+		stats.setTotalMatches(LAY_BET_ANALYSIS_MATCH_WISE_LIST.size());
+		stats.setTotalPnL(LAY_BET_ANALYSIS_LIST.stream().mapToInt(a->a.getBetPnL()).sum());
+		stats.setMaxNosOfBetsInMatch(LAY_BET_ANALYSIS_MATCH_WISE_LIST.stream().mapToInt(m->m.getTotalBets()).max().getAsInt());
+		
+		double roi = (stats.getTotalPnL()*100)/(stats.getTotalBets()*100);
+		
+		stats.setRoi(roi);
 		
 		return stats;
 	}

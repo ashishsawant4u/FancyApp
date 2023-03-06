@@ -27,4 +27,12 @@ public class LayBetTestSummaryStats
 	private Integer maxProfitInMatch;
 	
 	private Integer maxLossInMatch;
+	
+	private Integer totalMatches;
+	
+	private Integer totalPnL;
+	
+	private Integer maxNosOfBetsInMatch;
+	
+	private double roi;
 }

@@ -69,11 +69,11 @@ public class OldScoreBoardsController
 		
 		if(inning.equals("0"))
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContaining(matchId);
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingOrderByIdAsc(matchId);
 		}
 		else
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInning(matchId,Integer.parseInt(inning));
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInningOrderByIdAsc(matchId,Integer.parseInt(inning));
 		}
 		
 		int totalBatsmans = seasonAllScores.size();
@@ -128,11 +128,11 @@ public class OldScoreBoardsController
 		
 		if(inning.equals("0"))
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContaining(matchId);
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingOrderByIdAsc(matchId);
 		}
 		else
 		{
-			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInning(matchId,Integer.parseInt(inning));
+			seasonAllScores = oldScoreBoardsRepository.findByMatchIdContainingAndInningOrderByIdAsc(matchId,Integer.parseInt(inning));
 		}
 		
 		int totalBatsmans = seasonAllScores.size();

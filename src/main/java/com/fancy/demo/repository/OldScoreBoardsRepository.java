@@ -13,9 +13,9 @@ import com.fancy.demo.models.OldScoreBoards;
 @Component("oldScoreBoardsRepository")
 public interface OldScoreBoardsRepository  extends JpaRepository<OldScoreBoards, Long>
 {
-	List<OldScoreBoards> findByMatchIdContaining(String matchId);
+	List<OldScoreBoards> findByMatchIdContainingOrderByIdAsc(String matchId);
 	
-	List<OldScoreBoards> findByMatchIdContainingAndInning(String matchId,Integer inning);
+	List<OldScoreBoards> findByMatchIdContainingAndInningOrderByIdAsc(String matchId,Integer inning);
 	
 	@Query("SELECT DISTINCT matchId , matchTitle FROM OldScoreBoards")
 	public List<Object> findAllDistinctMatches();	

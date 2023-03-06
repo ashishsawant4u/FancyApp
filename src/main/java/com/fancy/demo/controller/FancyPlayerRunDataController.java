@@ -101,10 +101,16 @@ public class FancyPlayerRunDataController
 			{
 				List<Integer> layBets = getLayBetsForPlayer(playerName, layWithoutZero);
 				
+				if(!batsmanScore.isEmpty())
+				{
+					FancyPlayerRunAnalysis p = getBetPnL(layBets, playerName,batsmanScore);
+					
+					if(null!=p)
+					{
+						playerBetsCount.add(p);
+					}
+				}
 				
-				FancyPlayerRunAnalysis p = getBetPnL(layBets, playerName,batsmanScore);
-				
-				playerBetsCount.add(p);
 			}
 		}
 		
@@ -222,9 +228,15 @@ public class FancyPlayerRunDataController
 			
 		}
 		
+		if(playerScore.isEmpty())
+		{
+			return null;
+		}
+		
 		System.out.println("matched batsman ===> "+playerScore.iterator().next().getPlayerName());
 		
 		int batsmanScored = playerScore.get(playerScore.size()-1).getPlayerRun();
+		
 		
 		List<Integer> layBetsBkp = new ArrayList<Integer>(layBets);
 		

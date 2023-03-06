@@ -27,4 +27,6 @@ public class LayBetTestAnalysis
 	private Integer layBet;
 	
 	private Integer betPnL;
+	
+	private Long matchRef;
 }

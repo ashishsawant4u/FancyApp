@@ -27,7 +27,7 @@
 <div class="w-50">
 
 <select class="form-select mt-1 mb-2 old-score-dropdowns" aria-label="Default select example" id="oldTournamentsDropdown">
-  <option selected>Select Tournaments</option>
+  <option selected value="">Select Tournaments</option>
   <c:forEach var="tournament" items="${allTournaments}">  
   	<option value="${tournament.matchId}" data-tournamentId="${tournament.matchId}">${tournament.matchId}</option>
   </c:forEach>

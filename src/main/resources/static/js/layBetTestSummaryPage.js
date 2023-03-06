@@ -37,13 +37,17 @@ function showLayBetTestSummryStats()
 				success: function(item) 
 				{  
 						var trHTML = 
-						'<tr><td class="fw-bold">Total Bets</td><td>'+item.totalBets+'</td></tr>'
+						'<tr><td class="fw-bold">Total Matches</td><td>'+item.totalMatches+'</td></tr>'
+						+'<tr><td class="fw-bold">Total Bets</td><td>'+item.totalBets+'</td></tr>'
+						+'<tr><td class="fw-bold">Total P&L</td><td>'+item.totalPnL+'</td></tr>'
 						+'<tr><td class="fw-bold">Pass</td><td>'+item.passCount+'</td></tr>'
 						+'<tr><td class="fw-bold">Fail</td><td>'+item.failCount+'</td></tr>'
 						+'<tr><td class="fw-bold">WinRate</td><td>'+item.winRate+'%</td></tr>'
 						+'<tr><td class="fw-bold">FailRate</td><td>'+item.failRate+'%</td></tr>'
 						+'<tr><td class="fw-bold">Max Profit In Match</td><td>'+item.maxProfitInMatch+'</td></tr>'
-						+'<tr><td class="fw-bold">Max Loss In Match</td><td>'+item.maxLossInMatch+'</td></tr>';
+						+'<tr><td class="fw-bold">Max Loss In Match</td><td>'+item.maxLossInMatch+'</td></tr>'
+						+'<tr><td class="fw-bold">Max Nos Of Bets In Match</td><td>'+item.maxNosOfBetsInMatch+'</td></tr>'
+						+'<tr><td class="fw-bold">ROI</td><td>'+item.roi+'%</td></tr>';
 		        
 				        $('#layBetTestSummaryStatsTable').append(trHTML);
 						$('#layBetTestSummaryStatsTable').removeClass('d-none');
@@ -68,6 +72,21 @@ function  getLaybetTestingMatchwisePnL()
 					  { data: 'totalPnL' }
 				
 				],
+				columnDefs: [
+					 {
+						"createdCell": function (td, cellData, rowData, row, col) {
+		                    if(cellData > 0)
+							{
+						        $(td).addClass('bg-success text-white');
+						    }
+							else
+							{
+								$(td).addClass('bg-danger text-white');
+							}
+		                },
+						targets: [1]
+				  },
+				],	
 				initComplete :  function(settings, json) {
 						$('#layBetTesterMatchwisePnlModalBtn').removeClass('d-none');
 						showLayBetTestSummryStats();
