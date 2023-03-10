@@ -23,9 +23,11 @@ import com.fancy.demo.models.FancyPlayerRunAnalysis;
 import com.fancy.demo.models.LayBetTestAnalysis;
 import com.fancy.demo.models.LayBetTestMatchWisePnL;
 import com.fancy.demo.models.LayBetTestSummaryStats;
+import com.fancy.demo.models.LayBetTestSummaryStrategy2;
 import com.fancy.demo.models.OldScoreBoards;
 import com.fancy.demo.models.PlayerRun;
 import com.fancy.demo.repository.OldScoreBoardsRepository;
+import com.fancy.demo.strategies.WicketNotStrategies;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +52,7 @@ public class LayBetTestController
 	
 	Function<List<Integer>, Integer> RANDOM_LAYBET = (bets) ->{
 		
-		 bets = bets.stream().filter(b->b<=30).collect(Collectors.toList());
+		 bets = bets.stream().filter(b->b<=24).collect(Collectors.toList());
 		 Random rand = new Random();
 		 return bets.get(rand.nextInt(bets.size()));
 	};
@@ -86,14 +88,9 @@ public class LayBetTestController
 			long matchRef = MATCH_REFERENCE.apply(score.getMatchTitle());
 			analysis.setMatchRef(matchRef);
 			analysis.setLayBet(randomLayBet);
-			if(score.getBatsmanScore() < randomLayBet)
-			{
-				analysis.setBetPnL(100);
-			}
-			else
-			{
-				analysis.setBetPnL(-100);
-			}
+			
+			analysis.setBetPnL(WicketNotStrategies.strategy5BetPnL(List.of(randomLayBet), score.getBatsmanScore()));
+			
 			analysisList.add(analysis);
 			
 		}
@@ -178,6 +175,20 @@ public class LayBetTestController
 		double roi = (stats.getTotalPnL()*100)/(stats.getTotalBets()*100);
 		
 		stats.setRoi(roi);
+		
+		return stats;
+	}
+	
+	
+	@RequestMapping("/pnlstats/strategy2")
+	@ResponseBody
+	public LayBetTestSummaryStrategy2 layBetAnalysisSummaryStrategy2()
+	{
+		
+		LayBetTestSummaryStrategy2 stats = new LayBetTestSummaryStrategy2();
+		
+		int totalBets = LAY_BET_ANALYSIS_LIST.size();
+	
 		
 		return stats;
 	}

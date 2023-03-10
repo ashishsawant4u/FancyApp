@@ -12,18 +12,26 @@ public class WicketNotStrategies
 	
 	public static BiFunction<Integer, Integer, Boolean> isSecondBetMoreThanDouble = (b1,b2) -> b2 > (b1*2);
 	
+	
+	/**
+	 * ONLY 2 attempts
+	 * 1st Bet NOT
+	 * 2nd Bet NOT if 2nd Bet is less then Double
+	 * Else take loss if 2nd Bet is more then Double
+	 * 
+	 */
 	public static int strategy1BetPnL(List<Integer> layBets, int batsmanScored) 
 	{
 		int betPnL = 0 ;
 		
-		if(layBets.size()>1 && !isSecondBetMoreThanDouble.apply(layBets.get(0), layBets.get(1)) )
+		if(layBets.size()>1 && isSecondBetMoreThanDouble.apply(layBets.get(0), layBets.get(1)) )
 		{
 			betPnL = -100;
 		}
 		
-		if(layBets.size()>1 && isSecondBetMoreThanDouble.apply(layBets.get(0), layBets.get(1)))
+		if(layBets.size()>1 && !isSecondBetMoreThanDouble.apply(layBets.get(0), layBets.get(1)))
 		{
-			betPnL = (layBets.get(layBets.size()-1) > batsmanScored) ? 100 : getLossByAttempts(layBets.size());
+			betPnL = (layBets.get(1) > batsmanScored) ? 100 : getLossByAttempts(2);
 		}
 		
 		
@@ -35,6 +43,11 @@ public class WicketNotStrategies
 		return betPnL;
 	}
 	
+	/**
+	 * 1st Bet NOT
+	 * if 2nd Bet is more than double then NOT unlimited times 
+	 * if 2nd Bet is less than double then YES and STOP (only 2 attempts)
+	 */
 	public static  int strategy2BetPnL(List<Integer> layBets, int batsmanScored) 
 	{
 		int betPnL = 0 ;
@@ -60,9 +73,12 @@ public class WicketNotStrategies
 		return betPnL;
 	}
 	
+	/**
+	 * Not till 3 times
+	 */
 	public static  int strategy3BetPnL(List<Integer> layBets, int batsmanScored) 
 	{
-		layBets = layBets.stream().limit(3).collect(Collectors.toList());
+		layBets = layBets.stream().limit(2).collect(Collectors.toList());
 		
 		int betPnL = 0 ;
 		
@@ -128,7 +144,7 @@ public class WicketNotStrategies
 	
 	/**
 	 * 
-	 * only first bet NO
+	 * only 1st bet NOT and exit
 	 */
 	public static  int strategy5BetPnL(List<Integer> layBets, int batsmanScored) 
 	{	

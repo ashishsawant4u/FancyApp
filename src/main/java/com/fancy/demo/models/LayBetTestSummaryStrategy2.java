@@ -11,7 +11,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LayBetTestSummaryStats
+public class LayBetTestSummaryStrategy2
 {	
 	
 	private Integer totalBets;
@@ -36,5 +36,8 @@ public class LayBetTestSummaryStats
 	
 	private double roi;
 	
+	private Integer scoredLessThan2XOfFirstLaybet;
+	
+	private Integer scoredMoreThan2XOfFirstLaybet;
 	
 }

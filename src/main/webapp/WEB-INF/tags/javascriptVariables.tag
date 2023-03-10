@@ -19,7 +19,7 @@
 <c:url scope="session" var="layBetTesterPageUrl" value="/laybettest/summary"/>
 <c:url scope="session" var="laybetTestingMatchwisePnLAnalysisUrl" value="/laybettest/pnlstats"/>
 <c:url scope="session" var="laybetTestingMatchwisePnLAnalysisSummaryUrl" value="/laybettest/pnlstats/summary"/>
-
+<c:url scope="session" var="layBetsCountWiseDataUrl" value="/laybets/coutwise-bets"/>
 
 <script type="text/javascript">
 	var fancyRecordsByMatchUrl = "${fancyRecordsByMatchUrl}";
@@ -31,6 +31,7 @@
 	var betsCounterDataUrl = "${betsCounterDataUrl}";
 	var betsCounterPageUrl = "${betsCounterPageUrl}";
 	var layBetsSummaryDataUrl = "${layBetsSummaryDataUrl}";
+	var layBetsCountWiseDataUrl = "${layBetsCountWiseDataUrl}";
 	var layBetsSummaryPageUrl = "${layBetsSummaryPageUrl}";
 	var scoreRangeAnalysisDataUrl = "${scoreRangeAnalysisDataUrl}";
 	var scoreAnalysisDataUrl = "${scoreAnalysisDataUrl}";

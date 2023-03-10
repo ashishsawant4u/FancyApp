@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.fancy.demo.models.BetCounterTracker;
 import com.fancy.demo.models.FancyPlayerRunAnalysis;
 import com.fancy.demo.models.LayBetTracker;
 import com.fancy.demo.models.PlayerRun;
@@ -144,5 +145,33 @@ public class LayBetsController
 	{
 		
 		return "layBetsSummaryPage";
+	}
+	
+	@RequestMapping("/coutwise-bets/{inning}/{betCount}")
+	@ResponseBody
+	public Map<String, List<FancyPlayerRunAnalysis>> betCounterTracker(@PathVariable(name = "inning", required = false) String inning,
+			@PathVariable(name = "betCount", required = false) String betCount)
+	{
+		Map<String, List<FancyPlayerRunAnalysis>> data = new HashMap<>();
+		
+		List<BetCounterTracker> tracker = new ArrayList<BetCounterTracker>();
+		
+		List<PlayerRun> allMatches = fancyPlayerRunDataController.getAllMatches();
+		
+		List<FancyPlayerRunAnalysis> allMatchAnalysis = new ArrayList<FancyPlayerRunAnalysis>();
+		
+		for(PlayerRun match : allMatches)
+		{
+			List<FancyPlayerRunAnalysis> matchAnalysis = fancyPlayerRunDataController.analyzeMatch(match.getMatchId(),Integer.parseInt(inning));
+		
+			allMatchAnalysis.addAll(matchAnalysis);
+		}	
+		
+		
+		List<FancyPlayerRunAnalysis> betSpecificMatches = allMatchAnalysis.stream().filter(a->a.getTotalBets() == Integer.valueOf(betCount)).collect(Collectors.toList());
+		
+		data.put("data", betSpecificMatches);
+		
+		return data;
 	}
 }
