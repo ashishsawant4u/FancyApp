@@ -37,7 +37,7 @@ public class WktNotPlaceBetController
 				
 			} catch (Exception e) 
 			{
-				log.error("failed while saving "+e);
+				log.error("failed while placing bet "+e);
 				return new ResponseEntity<String>("NOK",HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}

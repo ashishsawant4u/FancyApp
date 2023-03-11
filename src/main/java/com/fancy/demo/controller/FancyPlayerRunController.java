@@ -1,5 +1,6 @@
 package com.fancy.demo.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,10 @@ public class FancyPlayerRunController
 	@Resource(name = "playerRunRepository")
 	PlayerRunRepository playerRunRepository;
 	
+	
+	@Autowired
+	WktNotPlaceBetController wktNotPlaceBetController;
+	
 	@PostMapping("/run")
 	public ResponseEntity<String> getFancyRun(@RequestBody PlayerRun playerRun)
 	{
@@ -33,7 +38,7 @@ public class FancyPlayerRunController
 				
 				if(null!=savedWktNotFancyForPlayer)
 				{
-					
+					wktNotPlaceBetController.placeBet(playerRun);
 				}
 				
 			} catch (Exception e) 
