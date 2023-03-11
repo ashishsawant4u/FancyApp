@@ -12,6 +12,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -39,6 +40,9 @@ public class FancyPlayerRunDataController
 	
 	@Resource(name = "batsmanScoreRepository")
 	BatsmanScoreRepository batsmanScoreRepository;
+	
+	@Autowired
+	BatsmanScoreController batsmanScoreController;
 	
 	@RequestMapping("/wktnot/{inning}")
 	public String getData(@PathVariable(name = "inning", required = false) String inning,Model model)
@@ -74,7 +78,7 @@ public class FancyPlayerRunDataController
 		
 	}
 	
-	@RequestMapping("/analyzeMatch/{matchId}/{inning}")
+	@RequestMapping("/analyzeMatchBkp/{matchId}/{inning}")
 	@ResponseBody
 	public List<FancyPlayerRunAnalysis> analyzeMatch(@PathVariable("matchId") String matchId,@PathVariable(name = "inning", required = false) Integer inning)
 	{
@@ -319,4 +323,81 @@ public class FancyPlayerRunDataController
 		
 	}
 	
+	@RequestMapping("/analyzeMatch/{matchId}/{inning}")
+	@ResponseBody
+	public List<FancyPlayerRunAnalysis> analyzeMatch2(@PathVariable("matchId") String matchId,@PathVariable(name = "inning", required = false) Integer inning)
+	{
+		List<FancyPlayerRunAnalysis> playerLayBets = new ArrayList<FancyPlayerRunAnalysis>();
+		
+		List<PlayerRun>  fancyRunRecords = null;
+		
+		if(null!=inning && !inning.equals(0))
+		{
+			fancyRunRecords =  playerRunRepository.findByMatchIdAndInning(matchId,Integer.valueOf(inning));
+		}
+		else
+		{	
+			fancyRunRecords =  playerRunRepository.findByMatchId(matchId);
+		}
+		
+		
+		
+		Map<String, List<PlayerRun>> fancyByPlayer = fancyRunRecords.stream().collect(Collectors.groupingBy(PlayerRun::getPlayerName));
+		
+		
+		for(String playerName : fancyByPlayer.keySet())
+		{
+			List<PlayerRun> fancyOfPlayer = fancyByPlayer.get(playerName).stream().filter(r->r.getLayRun()!=0).collect(Collectors.toList());;
+			
+			
+			if(!fancyOfPlayer.isEmpty())
+			{
+				List<BatsmanScore> playerScore = batsmanScoreController.getBatsmanScore(matchId, String.valueOf(fancyOfPlayer.iterator().next().getInning()), playerName);
+				
+				
+				if(!playerScore.isEmpty())
+				{
+					FancyPlayerRunAnalysis analysis = fancyAnalysisForPlayer(fancyOfPlayer, playerScore);
+					
+					playerLayBets.add(analysis);
+				}
+			}
+			
+		}
+		
+		playerLayBets.sort(Comparator.comparing(FancyPlayerRunAnalysis::getCreateDateTime, Comparator.nullsFirst(Comparator.naturalOrder())));
+
+		return playerLayBets;
+	}
+	
+	
+	public FancyPlayerRunAnalysis fancyAnalysisForPlayer(List<PlayerRun> fancyOfPlayer,List<BatsmanScore> playerScore)
+	{
+		FancyPlayerRunAnalysis analysis = new FancyPlayerRunAnalysis();
+		analysis.setPlayerName(playerScore.iterator().next().getPlayerName());
+		analysis.setInning(playerScore.iterator().next().getInning());
+		analysis.setCreateDateTime(playerScore.iterator().next().getCreateDateTime());
+		
+		
+		int batsmanScored = playerScore.get(playerScore.size()-1).getPlayerRun();
+		analysis.setBatsmanScored(batsmanScored);
+		
+		List<Integer> layBets = getLayBetsForPlayer(playerScore.iterator().next().getPlayerName(), fancyOfPlayer);
+		analysis.setLayBets(layBets);
+		analysis.setTotalBets(layBets.size());
+		
+		
+		int startegy1BetPnL = WicketNotStrategies.strategy1BetPnL(layBets, batsmanScored);
+		int startegy2BetPnL = WicketNotStrategies.strategy2BetPnL(layBets, batsmanScored);
+		int startegy3BetPnL = WicketNotStrategies.strategy3BetPnL(layBets, batsmanScored);
+		int startegy4BetPnL = WicketNotStrategies.strategy4BetPnL(layBets, batsmanScored);
+		int startegy5BetPnL = WicketNotStrategies.strategy5BetPnL(layBets, batsmanScored);
+		
+		analysis.setStartegy1BetPnL(startegy1BetPnL);
+		analysis.setStartegy2BetPnL(startegy2BetPnL);
+		analysis.setStartegy3BetPnL(startegy3BetPnL);
+		analysis.setStartegy4BetPnL(startegy4BetPnL);
+		analysis.setStartegy5BetPnL(startegy5BetPnL);
+		return analysis;
+	}
 }

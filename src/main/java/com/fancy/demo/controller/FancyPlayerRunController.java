@@ -29,7 +29,12 @@ public class FancyPlayerRunController
 		{
 			try 
 			{
-				playerRunRepository.save(playerRun);
+				PlayerRun savedWktNotFancyForPlayer = playerRunRepository.save(playerRun);
+				
+				if(null!=savedWktNotFancyForPlayer)
+				{
+					
+				}
 				
 			} catch (Exception e) 
 			{

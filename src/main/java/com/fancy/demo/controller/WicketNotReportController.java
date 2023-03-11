@@ -58,7 +58,7 @@ public class WicketNotReportController
 		
 		for(PlayerRun match : allMatches)
 		{
-			List<FancyPlayerRunAnalysis> matchAnalysis = fancyPlayerRunDataController.analyzeMatch(match.getMatchId(),Integer.parseInt(inning));
+			List<FancyPlayerRunAnalysis> matchAnalysis = fancyPlayerRunDataController.analyzeMatch2(match.getMatchId(),Integer.parseInt(inning));
 			
 			if(!CollectionUtils.isEmpty(matchAnalysis))
 			{
@@ -73,7 +73,7 @@ public class WicketNotReportController
 				summary.setStrategy2PnL(matchAnalysis.stream().map(r->r.getStartegy2BetPnL()).collect((Collectors.summingInt(Integer::intValue))));
 				summary.setStrategy3PnL(matchAnalysis.stream().map(r->r.getStartegy3BetPnL()).collect((Collectors.summingInt(Integer::intValue))));
 				summary.setStrategy4PnL(matchAnalysis.stream().map(r->r.getStartegy4BetPnL()).collect((Collectors.summingInt(Integer::intValue))));
-				summary.setStrategy5PnL(matchAnalysis.stream().map(r->r.getStartegy5BetPnL()).collect((Collectors.summingInt(Integer::intValue))));
+				summary.setStrategy5PnL(matchAnalysis.stream().mapToInt(r->r.getStartegy5BetPnL()).sum());
 				summary.setMatchDate(dateString.apply(matchAnalysis.stream().findAny().get().getCreateDateTime()));
 				sumaryList.add(summary);
 			}

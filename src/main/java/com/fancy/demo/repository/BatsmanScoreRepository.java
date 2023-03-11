@@ -15,4 +15,8 @@ public interface BatsmanScoreRepository extends JpaRepository<BatsmanScore, Long
 			Integer playerRun,String matchId);
 	
 	public List<BatsmanScore> findByMatchId(String matchId);
+	
+	public List<BatsmanScore> findByMatchIdAndInningAndPlayerNameEndsWith(String matchId,Integer inning,String playerName);
+	
+	public List<BatsmanScore> findByMatchIdAndInningAndPlayerNameStartsWithAndPlayerNameEndsWith(String matchId,Integer inning,String startName,String endName);
 }

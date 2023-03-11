@@ -55,26 +55,36 @@ function getWicketNotSummaryReport()
 			            api.column(2).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
+						+ '<br> Max Profit : '+ Math.max.apply(Math,api.column(2).data())
+						+ '<br> Max Loss    : '+ Math.min.apply(Math,api.column(2).data())
 			        );
 					$(api.column(3).footer()).html(
 			            api.column(3).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
+						+ '<br> Max Profit : '+ Math.max.apply(Math,api.column(3).data())
+						+ '<br> Max Loss    : '+ Math.min.apply(Math,api.column(3).data())
 			        );
 					$(api.column(4).footer()).html(
 			            api.column(4).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
+						+ '<br> Max Profit : '+ Math.max.apply(Math,api.column(4).data())
+						+ '<br> Max Loss    : '+ Math.min.apply(Math,api.column(4).data())
 			        );
 					$(api.column(5).footer()).html(
 			            api.column(5).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
+						+ '<br> Max Profit : '+ Math.max.apply(Math,api.column(5).data())
+						+ '<br> Max Loss    : '+ Math.min.apply(Math,api.column(5).data())
 			        );
 					$(api.column(6).footer()).html(
 			            api.column(6).data().reduce(function ( a, b ) {
 			                return a + b;
 			            }, 0)
+						+ '<br> Max Profit : '+ Math.max.apply(Math,api.column(6).data())
+						+ '<br> Max Loss    : '+ Math.min.apply(Math,api.column(6).data())
 			        );
 			    }
 			});

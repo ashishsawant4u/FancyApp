@@ -21,6 +21,8 @@ public interface PlayerRunRepository extends JpaRepository<PlayerRun, Long>
 
 	public List<PlayerRun> findByMatchId(String matchId);
 	
+	public List<PlayerRun> findByMatchIdAndInning(String matchId,Integer inning);
+	
 	public List<PlayerRun> findDistinctPlayerNameByMatchIdOrderByIdAsc(String matchId);
 	
 	public List<PlayerRun> findByMatchIdAndPlayerNameOrderByIdAsc(String matchId,String playerName);
